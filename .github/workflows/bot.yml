@@ -2,7 +2,7 @@ name: Python Trending Bot
 
 on:
   schedule:
-    - cron: '0 */6 * * *'  # Her 6 saatte bir çalıştır
+    - cron: '0 0 * * *'  # Günde bir kez çalıştır (her gece yarısı UTC)
   workflow_dispatch:  # Manuel olarak da tetiklenebilir
 
 jobs:
@@ -12,11 +12,14 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
+      with:
+        fetch-depth: 1  # Sadece son commit'i indir (daha hızlı)
       
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
         python-version: '3.10'
+        cache: 'pip'  # Pip paketlerini önbelleğe al (daha hızlı kurulum)
         
     - name: Install dependencies
       run: |
@@ -27,5 +30,6 @@ jobs:
       env:
         BLUESKY_USERNAME: ${{ secrets.BLUESKY_USERNAME }}
         BLUESKY_PASSWORD: ${{ secrets.BLUESKY_PASSWORD }}
-        GITHUB_TOKEN: ${{ secrets.GH_PAT }}  # Not: Burada GH_PAT kullanıyoruz, çünkü GITHUB_TOKEN zaten özel bir değişken
+        GITHUB_TOKEN: ${{ secrets.GH_PAT }}
       run: python bot.py
+      timeout-minutes: 5  # Maksimum çalışma süresini sınırla
