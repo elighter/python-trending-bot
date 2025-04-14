@@ -1,24 +1,24 @@
-name: Python Trending Bot
+name: Python Trending Bot (Manual Only)
 
 on:
-  schedule:
-    - cron: '0 0 * * *'  # Günde bir kez çalıştır (her gece yarısı UTC)
-  workflow_dispatch:  # Manuel olarak da tetiklenebilir
+  workflow_dispatch:  # Sadece manuel tetikleme ile çalışacak
+  # schedule satırı kaldırıldı
 
 jobs:
   post-trending:
     runs-on: ubuntu-latest
+    
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
       with:
-        fetch-depth: 1  # Sadece son commit'i indir (daha hızlı)
-    
+        fetch-depth: 1
+      
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
         python-version: '3.10'
-        cache: 'pip'  # Pip paketlerini önbelleğe al
+        cache: 'pip'
         
     - name: Install dependencies
       run: |
@@ -31,4 +31,4 @@ jobs:
         BLUESKY_PASSWORD: ${{ secrets.BLUESKY_PASSWORD }}
         GITHUB_TOKEN: ${{ secrets.GH_PAT }}
       run: python bot.py
-      timeout-minutes: 5  # Maksimum çalışma süresini sınırla
+      timeout-minutes: 5
