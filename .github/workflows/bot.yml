@@ -8,18 +8,17 @@ on:
 jobs:
   post-trending:
     runs-on: ubuntu-latest
-    
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
       with:
         fetch-depth: 1  # Sadece son commit'i indir (daha hızlı)
-      
+    
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
         python-version: '3.10'
-        cache: 'pip'  # Pip paketlerini önbelleğe al (daha hızlı kurulum)
+        cache: 'pip'  # Pip paketlerini önbelleğe al
         
     - name: Install dependencies
       run: |
